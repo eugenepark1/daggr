@@ -9,6 +9,13 @@ class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.write('Hello, world')
 
+class CarHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write('GET - Welcome to the CarHandler!')
+
+    def post(self):
+        self.write('POST - Welcome to the CarHandler!')
+
 def verifyDatabase():
     conn = sqlite.connect('cars.db')
     c = conn.cursor()
@@ -31,7 +38,9 @@ def verifyDatabase():
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-            (r"/?", MainHandler)
+            (r"/?", MainHandler),
+            (r"/api/v1/cars/?", CarHandler),
+            (r"/api/v1/cars/[0-9][0-9][0-9][0-9]/?", CarHandler)
         ]
         tornado.web.Application.__init__(self, handlers)
 
